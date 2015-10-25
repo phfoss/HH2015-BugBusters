@@ -7,9 +7,8 @@ use Data::Dumper qw(Dumper);
 
 my $schema = BugBuster::DAO::Schema->schema();
 
-print Dumper( [ $schema->sources ]);
+my @input = $schema->resultset('SupplyInputData')->all();
 
-print Dumper( [ $schema->source('SupplyInputData')->columns ]);
-print Dumper( [ $schema->source('AgentFamily')->columns ]);
-print Dumper( [ $schema->source('SupplyAgent')->columns ]);
-print Dumper( [ $schema->source('SupplyAgentForm')->columns ]);
+foreach my $input (@input) {
+	printf("INPUT RECORD: %i, %s, %s, %s, %s\n", $input->idSupplyInput, $input->PeriodData, $input->LocationData, $input->ProductData, $input->QuantityData);
+};
