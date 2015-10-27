@@ -1,16 +1,20 @@
+/* Direct SQL against the SupplyInputData table to mimic the 
+   end-state processing output in the warehouse table */
 SELECT 
 i.PeriodData as SupplyDate,
 l.LocationLevel1 as Hospital,
 l.LocationLevel2 as Department,
 l.LocationLevel3 as Ward,
 a.GenericName as Agent,
-p.SupplyAmountMg / 1000 as SupplyAmountGrams,
+p.SupplyAmountMg * i.QuantityData / 1000 as SupplyAmountGrams,
 f.DefinedDailyDoseMg / 1000 as DDDGrams,
 bd.Quantity / 30 as AmortisedBedDays,
-p.SupplyAmountMg / f.DefinedDailyDoseMg / bd.Quantity as UsageDensityRate,
+p.SupplyAmountMg * i.QuantityData / f.DefinedDailyDoseMg / (bd.Quantity / 30) as UsageDensityRate,
 f.SupplyForm as Form,
 p.SupplyFormDetail as FormDetail,
-f.Restriction
+f.Restriction,
+p.SupplyAmountMg / 1000 as SingleDose,
+i.QuantityData as NumDoses
 
 FROM BugBusters.SupplyInputData i
 	join ProductLookup p 
