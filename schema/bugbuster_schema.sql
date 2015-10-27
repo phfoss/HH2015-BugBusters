@@ -45,6 +45,24 @@ CREATE TABLE `AgentRestriction` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `BedDays`
+--
+
+DROP TABLE IF EXISTS `BedDays`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `BedDays` (
+  `idBedDays` int(11) NOT NULL AUTO_INCREMENT,
+  `PeriodStart` datetime DEFAULT NULL,
+  `PeriodEnd` datetime DEFAULT NULL,
+  `Quantity` int(11) DEFAULT NULL,
+  `AmortisedPerDay` float DEFAULT NULL,
+  `LocationCode` varchar(45) DEFAULT NULL,
+  PRIMARY KEY (`idBedDays`)
+) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `Location`
 --
 
@@ -59,6 +77,9 @@ CREATE TABLE `Location` (
   `LocationLevel3` varchar(45) DEFAULT NULL,
   `Latitude` float DEFAULT NULL,
   `Longitude` float DEFAULT NULL,
+  `LocationCode` varchar(45) DEFAULT NULL,
+  `LocationAlias1` varchar(45) DEFAULT NULL,
+  `LocationAlias2` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idLocation`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -95,7 +116,7 @@ CREATE TABLE `ProductLookup` (
   `SupplyAmountMg` int(11) DEFAULT NULL,
   PRIMARY KEY (`idProductLookup`),
   UNIQUE KEY `ProductDesc_UNIQUE` (`ProductDesc`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=196 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -148,7 +169,7 @@ DROP TABLE IF EXISTS `SupplyAgentForm`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `SupplyAgentForm` (
   `idSupplyAgentForm` int(11) NOT NULL AUTO_INCREMENT,
-  `idSupplyAgent` varchar(20) NOT NULL,
+  `ATCCode` varchar(20) NOT NULL,
   `Restriction` char(1) DEFAULT NULL,
   `SupplyForm` char(1) DEFAULT NULL,
   `DefinedDailyDoseMg` int(11) DEFAULT NULL,
@@ -157,7 +178,7 @@ CREATE TABLE `SupplyAgentForm` (
   KEY `FK_SupplyForm_idx` (`SupplyForm`),
   CONSTRAINT `FK_AgentRestriction` FOREIGN KEY (`Restriction`) REFERENCES `AgentRestriction` (`Code`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `FK_SupplyForm` FOREIGN KEY (`SupplyForm`) REFERENCES `SupplyForm` (`idSupplyForm`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -190,8 +211,9 @@ CREATE TABLE `SupplyInputData` (
   `isProcessed` int(11) DEFAULT '0',
   `loadedDate` datetime DEFAULT NULL,
   `enteredBy` varchar(45) DEFAULT 'system',
-  PRIMARY KEY (`idSupplyInput`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`idSupplyInput`),
+  UNIQUE KEY `UQ_Input` (`PeriodData`,`LocationData`,`ProductData`,`QuantityData`)
+) ENGINE=InnoDB AUTO_INCREMENT=2692 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -203,4 +225,4 @@ CREATE TABLE `SupplyInputData` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2015-10-25 10:34:47
+-- Dump completed on 2015-10-26 13:05:42
