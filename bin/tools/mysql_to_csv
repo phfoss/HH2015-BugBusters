@@ -1,0 +1,4 @@
+#!/bin/bash
+#
+# convert standard textual mysql output to CSV
+cat - | perl -pe "s/^ //g;" | perl -pe "s/'/\'/;" | perl -pe 's/\t/\",\"/g;' | perl -pe 's/^/\"/;' | perl -pe 's/$/\"/;' 

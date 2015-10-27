@@ -1,0 +1,18 @@
+#!/bin/bash
+#
+# change a CSV file (with headers) into a bulk mysql insert statement
+# Assumes that the CSV is fully-escaped with double-quotes (as output by the mysql_to_csv script)
+#
+# Parameters
+# 	1 - filename
+#	2 - table name
+FILE=$1
+TABLE=$2
+if [[ -e $FILE ]]
+then
+	INSERT=`head -1 $FILE | tr '"' ' '`
+	INSERT_LINE="INSERT INTO $TABLE ( $INSERT ) VALUES"
+	echo $INSERT_LINE
+	cat $FILE | tr '"' "'" | sed -E "s/^'/('/g;s/'$/'),/g" 
+	tail -1 $FILE | tr '"' "'" | sed -E "s/^'/('/g;s/'$/')/g" 
+fi
